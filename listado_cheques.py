@@ -1,13 +1,6 @@
 import sys
 import csv
 
-archivo,dni,salida,tipo = (sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4])
-
-if len(sys.argv) < 6:
-  estado = "sin entrada"
-else:
-  estado = sys.argv[5]
-
 def filtrarChequesPorDni(listado,dni):
   return(list(listado := filter(lambda lista:lista[-3] == dni, listado)))
 
@@ -20,7 +13,7 @@ def filtrarChequesPorEstado(listado,estado):
   else:
     return(list(listado := filter(lambda lista:lista[-1] == estado, listado)))
 
-def filtrarListadoDeCheques(archivo,dni,salida,tipo,estado="sin entrada",fecha="sin entrada"):
+def filtrarListadoDeCheques(archivo,dni,salida,tipo,estado,fecha="sin entrada"):
   rutaArchivo = open(archivo,"r")
   archivoCSV = list(csv.reader(rutaArchivo))
   chequesPorDni = filtrarChequesPorDni(archivoCSV,dni)
@@ -38,8 +31,16 @@ def filtrarListadoDeCheques(archivo,dni,salida,tipo,estado="sin entrada",fecha="
     archivoAImprimir.close()
   rutaArchivo.close()
 
+if len(sys.argv) < 6:
+  estado = "sin entrada"
+else:
+  estado = sys.argv[5]
 
-filtrarListadoDeCheques(archivo,dni,salida,tipo,estado)
+if len(sys.argv) < 5:
+  print("Error! Debe colocar al menos 4 argumentos")
+else:
+  archivo,dni,salida,tipo = (sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4])
+  filtrarListadoDeCheques(archivo,dni,salida,tipo,estado)
 
 
 
