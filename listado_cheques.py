@@ -31,16 +31,10 @@ def filtrarListadoDeCheques(archivo,dni,salida,tipo,estado,fecha="sin entrada"):
     archivoAImprimir.close()
   rutaArchivo.close()
 
-if len(sys.argv) < 6:
-  estado = "sin entrada"
-else:
-  estado = sys.argv[5]
+estado = "sin entrada" if len(sys.argv) < 6 else sys.argv[5]
 
 if len(sys.argv) < 5:
   print("Error! Debe colocar al menos 4 argumentos")
 else:
   archivo,dni,salida,tipo = (sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4])
   filtrarListadoDeCheques(archivo,dni,salida,tipo,estado)
-
-
-
