@@ -59,7 +59,7 @@ def filtrarListadoDeCheques(archivo,dni,salida,tipo,estado,fechas):
   chequesPorTipo = filtrarChequesPorTipo(chequesPorDni, tipo)
   chequesPorEstado = filtrarChequesPorEstado(chequesPorTipo,estado)
   chequesPorFechas = filtarChequesPorDias(chequesPorEstado, fechas)
-  errorChequeRepetido = repiteCheque(chequesPorFechas)
+  #errorChequeRepetido = repiteCheque(chequesPorFechas) 
   if salida == "PANTALLA":
     if chequesPorFechas == []:
       print("No se encotraron resultados")
@@ -68,11 +68,13 @@ def filtrarListadoDeCheques(archivo,dni,salida,tipo,estado,fechas):
       for linea in chequesPorFechas:
         linea[-4], linea[-5] = timestampToFecha(linea[-4]),timestampToFecha(linea[-5])
         print(linea)
+        
 
   else:
     archivoAImprimir = open(dni+'-'+ str(datetime.now().timestamp()) +".csv","w", newline="")
-    archivoAImprimirCSV = csv.writer(archivoAImprimir)
-    archivoAImprimirCSV.writerow(archivoCSV[0])
+    archivoAImprimirCSV = csv.writer(archivoAImprimir)     
+    info = [archivoCSV[0][-5], archivoCSV[0][-4], archivoCSV[0][-6], archivoCSV[0][-8]]
+    archivoAImprimirCSV.writerow(info)
     for linea in chequesPorFechas:
       info = [linea[-5], linea[-4], linea[-6],linea[-8]]
       archivoAImprimirCSV.writerow(info)
