@@ -58,7 +58,7 @@ estado,fechas = "sin entrada" , "sin entrada"
 if len(sys.argv) < 5:
   print("Error! Debe colocar al menos 4 argumentos")
 elif len(sys.argv) == 6:
-  if sys.argv[5] == "APROBRADO" or sys.argv[5] == "RECHAZADO" or sys.argv[5]=="PENDIENTE":
+  if sys.argv[5].upper() == "APROBADO" or sys.argv[5].upper() == "RECHAZADO" or sys.argv[5].upper()=="PENDIENTE":
       archivo,dni,salida,tipo,estado = (sys.argv[1],sys.argv[2],sys.argv[3].upper(),sys.argv[4].upper(),sys.argv[5].upper())
   else:
       archivo,dni,salida,tipo,fechas = (sys.argv[1],sys.argv[2],sys.argv[3].upper(),sys.argv[4].upper(),sys.argv[5])
@@ -69,4 +69,4 @@ elif len(sys.argv) == 7:
 else:
   archivo,dni,salida,tipo = (sys.argv[1],sys.argv[2],sys.argv[3].upper(),sys.argv[4].upper())
 
-filtrarListadoDeCheques(archivo,dni,salida,tipo,estado,fechas) 
+filtrarListadoDeCheques(archivo,dni,salida,tipo,estado,fechas)
