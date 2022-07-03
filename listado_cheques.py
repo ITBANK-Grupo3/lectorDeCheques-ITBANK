@@ -70,10 +70,13 @@ def filtrarListadoDeCheques(archivo,dni,salida,tipo,estado,fechas):
         print(linea)
 
   else:
-    archivoAImprimir = open(dni +".csv","w", newline="")
+    archivoAImprimir = open(dni+'-'+ str(datetime.now().timestamp()) +".csv","w", newline="")
     archivoAImprimirCSV = csv.writer(archivoAImprimir)
     archivoAImprimirCSV.writerow(archivoCSV[0])
-    archivoAImprimirCSV.writerows(chequesPorFechas)
+    for linea in chequesPorFechas:
+      info = [linea[-5], linea[-4], linea[-6],linea[-8]]
+      archivoAImprimirCSV.writerow(info)
+    #archivoAImprimirCSV.writerows(chequesPorFechas)
     archivoAImprimir.close()
   rutaArchivo.close()
 
