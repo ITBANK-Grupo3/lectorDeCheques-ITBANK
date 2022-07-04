@@ -1,7 +1,19 @@
+from itertools import count
 import sys
 import csv
 from datetime import datetime
-    
+
+def validarRepeticionesCheques(listado):
+  nrosDeCheques = [cheque[0] for cheque in listado]
+  chequesRepetidos = [nrosDeCheques.count(nroCheque) for nroCheque in nrosDeCheques]
+  repetidos = False 
+  for cantidad in chequesRepetidos:
+    if cantidad>1:
+      repetidos = True
+    else:
+      pass
+  return repetidos
+
 def filtrarChequesPorDni(listado,dni):
   return(list(listado := filter(lambda lista:lista[-3] == dni, listado)))
 
@@ -39,47 +51,36 @@ def buscarRepetidos(i,lista,elemento):
       guardado.append(lista[i-1])
   return guardado
 
-def repiteCheque(listado):
-  for i in range (len(listado)):
-    cuenta=listado[i-1][3]
-    cheques=buscarRepetidos(i,listado,cuenta) #Lista que guarda cheques con cuentas repetidas
-    for k in range(len(cheques)):
-      cheque=cheques[k-1][0]
-      errorcheque=buscarRepetidos(i,cheques,cheque) #Lista que guarda cheques con Nro de cheque repetido de cuenta repetida
-  if errorcheque != []:
-    return errorcheque
-  else:
-    errorcheque=[]
-    return errorcheque
-
 def filtrarListadoDeCheques(archivo,dni,salida,tipo,estado,fechas):
   rutaArchivo = open(archivo,"r")
   archivoCSV = list(csv.reader(rutaArchivo))
   chequesPorDni = filtrarChequesPorDni(archivoCSV,dni)
-  chequesPorTipo = filtrarChequesPorTipo(chequesPorDni, tipo)
-  chequesPorEstado = filtrarChequesPorEstado(chequesPorTipo,estado)
-  chequesPorFechas = filtarChequesPorDias(chequesPorEstado, fechas)
-  #errorChequeRepetido = repiteCheque(chequesPorFechas) 
-  if salida == "PANTALLA":
-    if chequesPorFechas == []:
-      print("No se encotraron resultados")
-    else:  
-      print(archivoCSV[0])
-      for linea in chequesPorFechas:
-        linea[-4], linea[-5] = timestampToFecha(linea[-4]),timestampToFecha(linea[-5])
-        print(linea)
-        
-
-  else:
-    archivoAImprimir = open(dni+'-'+ str(datetime.now().timestamp()) +".csv","w", newline="")
-    archivoAImprimirCSV = csv.writer(archivoAImprimir)     
-    info = [archivoCSV[0][-5], archivoCSV[0][-4], archivoCSV[0][-6], archivoCSV[0][-8]]
-    archivoAImprimirCSV.writerow(info)
-    for linea in chequesPorFechas:
-      info = [linea[-5], linea[-4], linea[-6],linea[-8]]
+  repetido = validarRepeticionesCheques(chequesPorDni)
+  if not repetido:
+    chequesPorTipo = filtrarChequesPorTipo(chequesPorDni, tipo)
+    chequesPorEstado = filtrarChequesPorEstado(chequesPorTipo,estado)
+    chequesPorFechas = filtarChequesPorDias(chequesPorEstado, fechas)
+    if salida.upper() == "PANTALLA":
+      if chequesPorFechas == []:
+        print("No se encotraron resultados")
+      else:  
+        print(archivoCSV[0])
+        for linea in chequesPorFechas:
+          linea[-4], linea[-5] = timestampToFecha(linea[-4]),timestampToFecha(linea[-5])
+          print(linea)
+    elif salida.upper() == "CSV":
+      archivoAImprimir = open(dni+'-'+ str(datetime.now().timestamp()) +".csv","w", newline="")
+      archivoAImprimirCSV = csv.writer(archivoAImprimir)     
+      info = [archivoCSV[0][-5], archivoCSV[0][-4], archivoCSV[0][-6], archivoCSV[0][-8]]
       archivoAImprimirCSV.writerow(info)
-    #archivoAImprimirCSV.writerows(chequesPorFechas)
-    archivoAImprimir.close()
+      for linea in chequesPorFechas:
+        info = [linea[-5], linea[-4], linea[-6],linea[-8]]
+        archivoAImprimirCSV.writerow(info)
+      archivoAImprimir.close()
+    else:
+        print("No se reconoce esa salida, vuelva intentar nuevamente con PANTALLA o CSV")
+  else:
+    print("ERROR: Se repite número de cheque de la cuenta seleccionada.")
   rutaArchivo.close()
 
 estado,fechas = "sin entrada" , "sin entrada" 
