@@ -64,10 +64,12 @@ def filtrarListadoDeCheques(archivo,dni,salida,tipo,estado,fechas):
       if chequesPorFechas == []:
         print("No se encotraron resultados")
       else:  
-        print(archivoCSV[0])
+        NroCheque,CodigoBanco,CodigoSucursal,NumeroCuentaOrigen,NumeroCuentaDestino,Valor,FechaOrigen,FechaPago,Dni,Tipo,Estado = archivoCSV[0]
+        print ("{:<12} {:<13} {:<16} {:<22} {:<22} {:<16} {:<16} {:<16} {:<16} {:<16} {:<16}".format(NroCheque,CodigoBanco,CodigoSucursal,NumeroCuentaOrigen,NumeroCuentaDestino,Valor,FechaOrigen,FechaPago,Dni,Tipo,Estado))
         for linea in chequesPorFechas:
           linea[-4], linea[-5] = timestampToFecha(linea[-4]),timestampToFecha(linea[-5])
-          print(linea)
+          NroCheque,CodigoBanco,CodigoSucursal,NumeroCuentaOrigen,NumeroCuentaDestino,Valor,FechaOrigen,FechaPago,Dni,Tipo,Estado = linea
+          print ("{:<12} {:<13} {:<16} {:<22} {:<22} {:<16} {:<16} {:<16} {:<16} {:<16} {:<16}".format(NroCheque,CodigoBanco,CodigoSucursal,NumeroCuentaOrigen,NumeroCuentaDestino,Valor,FechaOrigen,FechaPago,Dni,Tipo,Estado))
     elif salida.upper() == "CSV":
       archivoAImprimir = open(dni+'-'+ str(datetime.now().timestamp()) +".csv","w", newline="")
       archivoAImprimirCSV = csv.writer(archivoAImprimir)     
