@@ -41,16 +41,6 @@ def fechaToTimestamp(fechas):
 def timestampToFecha(fecha):
   return (datetime.fromtimestamp(int(fecha))).strftime("%d/%m/%Y")
 
-def buscarRepetidos(i,lista,elemento):
-  guardado=[]
-  for j in range (len(lista)):
-    cc=0
-    if elemento in lista[j-1]: #Contador de elementos Repetidos
-      cc+=1
-    if cc>1 and (elemento not in guardado):
-      guardado.append(lista[i-1])
-  return guardado
-
 def filtrarListadoDeCheques(archivo,dni,salida,tipo,estado,fechas):
   rutaArchivo = open(archivo,"r")
   archivoCSV = list(csv.reader(rutaArchivo))
