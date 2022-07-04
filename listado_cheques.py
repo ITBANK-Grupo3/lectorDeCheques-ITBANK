@@ -81,6 +81,7 @@ def filtrarListadoDeCheques(archivo,dni,salida,tipo,estado,fechas):
       archivoAImprimir.close()
     else:
         print("No se reconoce esa salida, vuelva intentar nuevamente con PANTALLA o CSV")
+
   else:
     print("ERROR: Se repite número de cheque de la cuenta seleccionada.")
   rutaArchivo.close()
